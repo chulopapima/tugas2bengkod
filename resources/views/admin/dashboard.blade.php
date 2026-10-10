@@ -1,3 +1,3 @@
-<h1>Dashboard Admin</h1>
-<p>Selamat Datang, Admin {{ Auth::user()->nama }}</p>
-<form action="{{ route('logout') }}" method="POST">@csrf <button type="submit">Logout</button></form>
+<x-layouts.app title="Admin Dashboard">
+    <h1 class="m1-4">Halo Selamat Datang Admin</h1>
+</x-layouts.app>

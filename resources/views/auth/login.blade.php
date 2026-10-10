@@ -1,49 +1,116 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Poliklinik</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-base-200 min-h-screen flex items-center justify-center p-4">
-    <div class="card w-full max-w-md bg-base-100 shadow-xl">
-        <div class="card-body">
-            <h2 class="card-title text-2xl font-bold justify-center mb-4">Login Poliklinik</h2>
+@extends('components.layouts.guest')
 
-            @if(session('success'))
-                <div class="alert alert-success mb-4 text-sm">
-                    <span>{{ session('success') }}</span>
-                </div>
-            @endif
+@section('content')
+<div class="card bg-base-100 shadow-2xl rounded-2xl w-full max-w-[420px]">
+    <div class="card-body my-2 p-[40px]">
 
-            @if($errors->any())
-                <div class="alert alert-error mb-4 text-sm">
-                    <span>{{ $errors->first() }}</span>
-                </div>
-            @endif
+        {{-- Logo & Title --}}
+        <div class="text-center mb-8">
+            <img src="{{ asset('images/logo-bengkot.png') }}"
+                class="w-[60px] h-[60px] rounded-[16px] object-cover mx-auto mb-[14px] block">
 
-            <form action="{{ route('login') }}" method="POST" class="space-y-4">
-                @csrf
-                <div class="form-control">
-                    <label class="label"><span class="label-text">Email</span></label>
-                    <input type="email" name="email" class="input input-bordered w-full" required placeholder="masukkan email" />
-                </div>
+            <h1 class="text-[1.5rem] font-extrabold text-[#1e2d6b] m-0 mb-[6px]">
+                Poliklinik
+            </h1>
 
-                <div class="form-control">
-                    <label class="label"><span class="label-text">Password</span></label>
-                    <input type="password" name="password" class="input input-bordered w-full" required placeholder="******" />
-                </div>
-
-                <div class="form-control mt-6">
-                    <button type="submit" class="btn btn-primary w-full">Masuk</button>
-                </div>
-            </form>
-
-            <div class="divider">Atau</div>
-            <p class="text-center text-sm">Belum punya akun pasien? <a href="{{ route('register') }}" class="link link-primary">Daftar Pasien</a></p>
+            <p class="text-[0.83rem] text-slate-400 m-0">
+                Masuk ke akun Anda
+            </p>
         </div>
+
+
+        {{-- Error Alert --}}
+        @if ($errors->any())
+        <div class="alert alert-error mb-5 rounded-xl text-[0.83rem]">
+            <i class="fas fa-circle-xmark"></i>
+            <span>{{ $errors->first() }}</span>
+        </div>
+        @endif
+
+
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
+
+
+            {{-- Email --}}
+            <div class="form-control mb-4">
+
+                <label class="label pb-1">
+                    <span class="text-[0.82rem] font-semibold text-gray-700">
+                        Email
+                    </span>
+                </label>
+
+                <label class="input input-bordered flex items-center gap-3 rounded-[10px] border-slate-200 bg-slate-50">
+                    <i class="fas fa-envelope text-slate-400 text-[0.82rem]"></i>
+
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email..."
+                        class="grow bg-transparent text-slate-800 text-[0.88rem]" required>
+                </label>
+
+            </div>
+
+
+            {{-- Password --}}
+            <div class="form-control mb-6">
+
+                <label class="label pb-1">
+                    <span class="text-[0.82rem] font-semibold text-gray-700">
+                        Password
+                    </span>
+                </label>
+
+                <label class="input input-bordered flex items-center gap-3 rounded-[10px] border-slate-200 bg-slate-50">
+                    <i class="fas fa-lock text-slate-400 text-[0.82rem]"></i>
+
+                    <input type="password" name="password" id="password_login" placeholder="Masukkan password..."
+                        class="grow bg-transparent text-slate-800 text-[0.88rem]" required>
+
+                    <i class="fas fa-eye text-slate-400 text-[0.82rem] cursor-pointer" id="toggle_login"
+                        onclick="togglePassword('password_login', 'toggle_login')"></i>
+
+                </label>
+
+            </div>
+
+
+            {{-- Submit Button --}}
+            <button type="submit" class="btn-primary-gradient mt-6 w-full">
+                <i class="fas fa-right-to-bracket"></i>
+                Login
+            </button>
+
+        </form>
+
+
+        {{-- Register --}}
+        <p class="text-center mt-5 text-[0.83rem] text-slate-400">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="text-[#2d4499] font-bold no-underline">
+                Register
+            </a>
+        </p>
+
     </div>
-</body>
-</html>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    function togglePassword(inputId, iconId) {
+
+        const input = document.getElementById(inputId);
+        const icon  = document.getElementById(iconId);
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } 
+        else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+
+    }
+</script>
+@endpush

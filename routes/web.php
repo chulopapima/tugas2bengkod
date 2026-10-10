@@ -5,14 +5,19 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ObatController;
 
+// Redirect halaman utama ke login
+Route::redirect('/', '/login');
+
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+
 Route::get('/register', [AuthController::class, 'showRegisterPasien'])->name('register');
-Route::post('/register', [AuthController::class, 'registerPasien']);
+Route::post('/register', [AuthController::class, 'registerPasien'])->name('register.post');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Group Routes
+// Group Routes dengan Authentikasi
 Route::middleware(['auth'])->group(function () {
 
     // 1. Admin
