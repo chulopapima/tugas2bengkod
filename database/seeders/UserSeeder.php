@@ -10,46 +10,33 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ambil ID Poli jika butuh relasi ke Poli
-        $poliUmumId = \App\Models\Poli::where('nama_poli', 'Poli Umum')->value('id');
+        // 1. Admin
+        User::create([
+            'nama' => 'Admin Poliklinik',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
 
-        // Admin
-        User::updateOrCreate(
-            ['email' => 'admin@gmail.com'],
-            [
-                'nama' => 'Admin Poliklinik',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'alamat' => 'Semarang',
-                'no_hp' => '081234567890',
-            ]
-        );
+        // 2. Dokter
+        User::create([
+            'nama' => 'dr. Agus Santoso',
+            'email' => 'dokter@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'dokter',
+            'alamat' => 'Jl. Pemuda No. 123',
+            'no_hp' => '081234567890',
+        ]);
 
-        // Dokter
-        User::updateOrCreate(
-            ['email' => 'dokter.agus@gmail.com'],
-            [
-                'nama' => 'dr. Agus Santoso',
-                'password' => Hash::make('password'),
-                'role' => 'dokter',
-                'id_poli' => $poliUmumId,
-                'alamat' => 'Semarang',
-                'no_hp' => '081298765432',
-            ]
-        );
-
-        // Pasien
-        User::updateOrCreate(
-            ['email' => 'deni@gmail.com'],
-            [
-                'nama' => 'Deni Kurniawan',
-                'password' => Hash::make('password'),
-                'role' => 'pasien',
-                'alamat' => 'Tegal',
-                'no_ktp' => '3328000000000001',
-                'no_hp' => '085700001111',
-                'no_rm' => '202610-001',
-            ]
-        );
+        // 3. Pasien
+        User::create([
+            'nama' => 'Deni Kurniawan',
+            'email' => 'pasien@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'pasien',
+            'alamat' => 'Jl. Imam Bonjol No. 45',
+            'no_hp' => '089876543210',
+            'no_rm' => 'RM-202610-001',
+        ]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dokter\JadwalPeriksaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -20,16 +21,17 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Group Routes dengan Authentikasi
 Route::middleware(['auth'])->group(function () {
 
-    // 1. Admin
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
-        Route::resource('obat', ObatController::class)->except(['create', 'edit', 'show']);
-    });
+   // 1. Admin
+Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+    Route::resource('obat', ObatController::class);
+});
 
-    // 2. Dokter
-    Route::middleware(['role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'dokter'])->name('dashboard');
-    });
+   // 2. Dokter
+Route::middleware(['role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'dokter'])->name('dashboard');
+    Route::resource('jadwal-periksa', JadwalPeriksaController::class);
+});
 
     // 3. Pasien
     Route::middleware(['role:pasien'])->prefix('pasien')->name('pasien.')->group(function () {

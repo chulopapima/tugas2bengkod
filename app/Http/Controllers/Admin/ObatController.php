@@ -14,36 +14,45 @@ class ObatController extends Controller
         return view('admin.obat.index', compact('obats'));
     }
 
+    public function create()
+    {
+        return view('admin.obat.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'nama_obat' => 'required|string|max:255',
-            'kemasan' => 'required|string|max:255',
-            'harga' => 'required|numeric|min:0',
+            'kemasan'   => 'required|string|max:100',
+            'harga'     => 'required|numeric|min:0',
         ]);
 
         Obat::create($request->all());
 
-        return redirect()->route('admin.obat.index')->with('success', 'Data obat berhasil ditambahkan.');
+        return redirect()->route('admin.obat.index')->with('success', 'Obat berhasil ditambahkan.');
     }
 
-    public function update(Request $request, $id)
+    public function edit(Obat $obat)
+    {
+        return view('admin.obat.edit', compact('obat'));
+    }
+
+    public function update(Request $request, Obat $obat)
     {
         $request->validate([
             'nama_obat' => 'required|string|max:255',
-            'kemasan' => 'required|string|max:255',
-            'harga' => 'required|numeric|min:0',
+            'kemasan'   => 'required|string|max:100',
+            'harga'     => 'required|numeric|min:0',
         ]);
 
-        $obat = Obat::findOrFail($id);
         $obat->update($request->all());
 
-        return redirect()->route('admin.obat.index')->with('success', 'Data obat berhasil diperbarui.');
+        return redirect()->route('admin.obat.index')->with('success', 'Obat berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy(Obat $obat)
     {
-        Obat::findOrFail($id)->delete();
-        return redirect()->route('admin.obat.index')->with('success', 'Data obat berhasil dihapus.');
+        $obat->delete();
+        return redirect()->route('admin.obat.index')->with('success', 'Obat berhasil dihapus.');
     }
 }
